@@ -1,0 +1,25 @@
+name: Deploy Next.js App
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install SSH key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ecdsa
+        chmod 600 ~/.ssh/id_ecdsa
+        ssh-keyscan -H 43.218.184.1 >> ~/.ssh/known_hosts
+
+    - name: Deploy to VM
+      run: |
+        ssh ubuntu@43.218.184.1 './deploy_script.sh'
