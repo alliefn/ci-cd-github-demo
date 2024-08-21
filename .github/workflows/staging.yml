@@ -10,9 +10,9 @@ jobs:
   create-pull-request:
     runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    # steps:
+    # - name: Checkout code
+    #   uses: actions/checkout@v2
 
     # - name: Create Pull Request
     #   uses: peter-evans/create-pull-request@v5
@@ -24,7 +24,9 @@ jobs:
     #     labels: 'auto-merge'
     #     reviewers: 'zalecodez'
 
-    # steps:
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Create Pull Request
         run: gh pr create --title 'Merge staging into main' --body 'Created by Github Action'
         env:
