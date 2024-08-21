@@ -11,39 +11,41 @@ jobs:
     runs-on: ubuntu-latest
 
     # steps:
-    # - name: Checkout code
-    #   uses: actions/checkout@v2
+    #   - name: Check out code
+    #     uses: actions/checkout@v2
 
-    # - name: Create Pull Request
-    #   uses: peter-evans/create-pull-request@v5
-    #   with:
-    #     branch: main
-    #     title: 'Auto-merge from Staging to Main'
-    #     commit-message: 'Auto MR: Merge changes from staging to main'
-    #     body: 'This PR was automatically created after successful tests on the staging branch.'
-    #     labels: 'auto-merge'
-    #     reviewers: 'zalecodez'
+    #   - name: Get registration token
+    #     id: getRegToken
+    #     run: |
+    #       curl -X POST -H \"Accept: application/vnd.github.v3+json\"  -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/repos/alliefn/ci-cd-github-demo/actions/runners/registration-token
+
+    #   - name: Create Pull Request
+    #     run: gh pr create --title 'Merge staging into main' --body 'Created by Github Action'
+    #     env:
+    #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Get registration token
-        id: getRegToken
-        run: |
-          curl -X POST -H \"Accept: application/vnd.github.v3+json\"  -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/repos/alliefn/ci-cd-github-demo/actions/runners/registration-token
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        branch: main
+        title: 'Auto-merge from Staging to Main'
+        commit-message: 'Auto MR: Merge changes from staging to main'
+        body: 'This PR was automatically created after successful tests on the staging branch.'
+        labels: 'auto-merge'
+        reviewers: 'alliefn'
 
-      - name: Create Pull Request
-        run: gh pr create --title 'Merge staging into main' --body 'Created by Github Action'
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # enable-auto-merge:
-  #   needs: create-pull-request
-  #   runs-on: ubuntu-latest
+  enable-auto-merge:
+    needs: create-pull-request
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #   - name: Enable Auto-Merge
-  #     uses: peter-evans/enable-pull-request-automerge@v2
-  #     with:
-  #       pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}
+    steps:
+    - name: Enable Auto-Merge
+      uses: peter-evans/enable-pull-request-automerge@v2
+      with:
+        pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}
+
