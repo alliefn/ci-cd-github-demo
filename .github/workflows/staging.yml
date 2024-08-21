@@ -39,13 +39,13 @@ jobs:
         reviewers: 'alliefn'
 
 
-  enable-auto-merge:
-    needs: create-pull-request
-    runs-on: ubuntu-latest
+  # enable-auto-merge:
+  #   needs: create-pull-request
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - name: Enable Auto-Merge
-      uses: peter-evans/enable-pull-request-automerge@v2
-      with:
-        pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}
+  #   steps:
+  #   - name: Enable Auto-Merge
+  #     uses: peter-evans/enable-pull-request-automerge@v2
+  #     with:
+  #       pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}
 
